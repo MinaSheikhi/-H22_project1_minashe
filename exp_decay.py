@@ -1,6 +1,7 @@
 import numpy as np
+from ode import ODEModel
 
-class ExponentialDecay:
+class ExponentialDecay(ODEModel):
     def __init__(self, a):
         self.decay = a
     
@@ -15,5 +16,5 @@ class ExponentialDecay:
         self._a = value
     
     def __call__(self, t: float, u: np.ndarray) -> np.ndarray:
-        return -self._a*u
-
+        f = lambda t, u: -self.decay*u
+        return f(t, u)
