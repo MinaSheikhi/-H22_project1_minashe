@@ -14,6 +14,11 @@ def test_ExponentialDecay():
 def test_negative_decay_raises_ValueError_1a():
     with pytest.raises(ValueError):
         model = ExponentialDecay(-0.4)
-        
+
+def test_negative_decay_raises_ValueError_1b():
+    model = ExponentialDecay(0.4) #set a = 0.4
+    with pytest.raises(ValueError):
+        model.decay = -1.0  # cant set a to new value -1 because of valueerror
+              
 
 
