@@ -10,3 +10,10 @@ def test_ExponentialDecay():
     du_dt = model(t,u)
     assert math.isclose(du_dt[0],-1.28)
 
+
+def test_negative_decay_raises_ValueError_1a():
+    with pytest.raises(ValueError):
+        model = ExponentialDecay(-0.4)
+        
+
+
