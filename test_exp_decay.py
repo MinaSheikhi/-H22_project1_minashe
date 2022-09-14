@@ -28,13 +28,21 @@ def test_solve_with_different_number_of_initial_states():
     with pytest.raises(InvalidInitialConditionError):
         solve_ode(model, u0, 10, .1)
 
-#@pytest.mark.parametrize("a, u0, T, dt", ([], [], []))
-# def test_solve_time(a, u0, T, dt):
-#     pass
+@pytest.mark.parametrize("a, u0, T, dt", [
+    (3, np.array([10]), 1, .1),
+    (4, np.array([3]), 10, .1),
+    (0, np.array([6]), 15, .2)])
 
-# def test_solve_solution(a, u0, T, dt):
-#     t = np.arange(0, T, dt)
+def test_solve_time(a, u0, T, dt):
+    model = ExponentialDecay(a)
+    res = solve_ode(model, u0, T, dt)
+
+    t_computed = res.time
+    t_expected = np.arange(0, T, dt)
+
+    assert t_expected.all() == t_computed.all()
+
+#def test_solve_solution(a, u0, T, dt):
+#    t = np.arange(0, T, dt)
     #assert ExponentialDecay(a).solve_exponentional_decay() == u0*np.exp(-a*t)
 
-
-test_ExponentialDecay()

@@ -26,7 +26,7 @@ def solve_ode(
 ) -> ODEResult:
 
     if len(u0) != model.num_states:
-        raise InvalidInitialConditionError(f"u0 needs to match the number of state variables of {type(model).__name__u8}. Len(u0) = {len(u0)}, and num_states = {model.num_states}.")
+        raise InvalidInitialConditionError(f"u0 needs to match the number of state variables of {type(model).__name__}. Len(u0) = {len(u0)}, and num_states = {model.num_states}.")
 
     t = np.arange(0, T, dt)
     sol = solve_ivp(fun=model, t_span=(0,T), y0=u0, t_eval=t)
