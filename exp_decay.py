@@ -41,7 +41,7 @@ class ExponentialDecay(ODEModel):
         """
 
         f = lambda t, u: -self.decay*u
-        return f
+        return f(t, u)
 
     @property
     def num_states(self) -> int:
@@ -74,8 +74,5 @@ def solve_exponentional_decay(
 
     modell = ExponentialDecay(a)
     t = np.arange(0, T, dt)
-    f = modell(t, u)
-
-    sol = solve_ivp(fun=f, t_span=(0,T), y0=u0, t_eval=t)
+    sol = solve_ivp(fun=modell, t_span=(0,T), y0=u0, t_eval=t)
     return sol["t"], sol["y"]
-    

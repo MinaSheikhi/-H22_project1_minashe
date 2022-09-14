@@ -14,20 +14,23 @@ class ODEModel(abc.ABC):
     def num_states(self) -> int:
         raise NotImplementedError
 
+class ODEResult(NamedTuple):
+    time: np.ndarray
+    solution: np.ndarray
+
 def solve_ode(
-    model: "ODEModel",
+    model: ODEModel,
     u0: np.ndarray,
     T: float,
     dt : float, 
-) -> "ODEResult":
+) -> ODEResult:
+
+    if len(u0) != model.num_states:
+        raise InvalidInitialConditionError(f"u0 needs to match the number of state variables of {type(model).__name__u8}. Len(u0) = {len(u0)}, and num_states = {model.num_states}.")
 
     t = np.arange(0, T, dt)
-    f = model(t, u0)
-    sol = solve_ivp(fun=f, t_span=(0,T), y0=u0, t_eval=t)
+    sol = solve_ivp(fun=model, t_span=(0,T), y0=u0, t_eval=t)
     res = ODEResult(time=sol["t"], solution=sol["y"])
 
     return res
 
-class ODEResult(NamedTuple):
-    time: np.ndarray
-    solution: np.ndarray
