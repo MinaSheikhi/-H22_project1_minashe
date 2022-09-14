@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Created by https://www.toptal.com/developers/gitignore/api/python
 # Edit at https://www.toptal.com/developers/gitignore?templates=python
 
@@ -164,3 +165,7 @@ cython_debug/
 #.idea/
 
 # End of https://www.toptal.com/developers/gitignore/api/python
+=======
+__pycache__
+.pytest_cache/
+>>>>>>> b29f96bf72cdb03eb2762ebc680211381d2c6cf7
