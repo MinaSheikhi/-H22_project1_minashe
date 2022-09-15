@@ -2,7 +2,7 @@ from exp_decay import ExponentialDecay
 import numpy as np
 import pytest
 import math
-from ode import ODEModel, solve_ode
+from ode import ODEModel, ODEResult, solve_ode
 from exception import InvalidInitialConditionError
 
 model = ExponentialDecay(.4)
@@ -42,7 +42,31 @@ def test_solve_time(a, u0, T, dt):
 
     assert t_expected.all() == t_computed.all()
 
-#def test_solve_solution(a, u0, T, dt):
-#    t = np.arange(0, T, dt)
-    #assert ExponentialDecay(a).solve_exponentional_decay() == u0*np.exp(-a*t)
+@pytest.mark.parametrize("a, u0, T, dt", [
+    (3, np.array([4]), 1, .1),
+    (1, np.array([6]), 10, .1),
+    (2, np.array([5]), 15, .2)])
+
+def test_solve_solution(a, u0, T, dt):
+    model = ExponentialDecay(a)
+    res = solve_ode(model, u0, T, dt)
+
+    t = np.arange(0, T, dt)
+
+    sol_computed = res.solution
+    sol_expected = u0*np.exp(-a*t)
+
+    relative_error = np.linalg.norm(sol_computed - sol_expected) / np.linalg.norm(sol_expected)
+    
+    assert abs(sol_computed - sol_expected).all() < relative_error
+
+def test_ODEResult():
+    t_ = 3; sol_ = (2, 3)
+    t = np.zeros(t_); sol = np.zeros(sol_)
+    
+    res = ODEResult(time=t, solution=sol)
+
+    assert res.num_states == 2 and res.num_timepoints == 3
+
+
 

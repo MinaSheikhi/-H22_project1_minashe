@@ -18,6 +18,14 @@ class ODEResult(NamedTuple):
     time: np.ndarray
     solution: np.ndarray
 
+    @property
+    def num_states(self):
+        return self.solution.shape[0]
+
+    @property
+    def num_timepoints(self):
+        return self.time.shape[0]
+
 def solve_ode(
     model: ODEModel,
     u0: np.ndarray,
