@@ -2,6 +2,7 @@ import numpy as np
 from dataclasses import dataclass
 from ode import ODEModel, ODEResult, solve_ode, plot_ode_solution
 from exp_decay import ExponentialDecay
+from typing import Optional
 
 
 class Pendulum(ODEModel):
@@ -38,11 +39,11 @@ class PendulumResults:
     pendulum: Pendulum
 
     @property
-    def theta(self):
+    def theta(self) -> np.ndarray:
         return self.results.solution ########????????###############
 
     @property 
-    def omega(self):
+    def omega(self) -> np.ndarray:
         return self.results.time ########?????????##############
 
     @property
@@ -53,16 +54,38 @@ class PendulumResults:
     def y(self) -> np.ndarray:
         return -self.pendulum.L*np.cos(self.theta)
 
+    @property 
+    def potential_energy(self) -> np.ndarray:
+        return self.pendulum.g*(self.y + self.pendulum.L)
 
-# def solve_pendulum(
-#     u0: np.ndarray,
-#     T: float,
-#     dt: float,
-#     pendulum: Optional[Pendulum] = Pendulum() ## et sted sier oppgave default skal være None, et annet sted står det at det skal være Pendulum()?
-# ) -> PendulumResults:
+    @property
+    def vx(self) -> np.ndarray:
+        return np.gradient(self.x, self.results.time)
 
-#     pass
+    @property 
+    def vy(self) -> np.ndarray:
+        return np.gradient(self.y, self.results.time) ##########????#####
+    
+    @property
+    def kinetic_energy(self) -> np.ndarray:
+        return (1/2)*(self.vx**2 + self.vy**2)
 
+    @property
+    def total_energy(self) -> np.ndarray:
+        return self.potential_energy + self.kinetic_energy
+    
+
+def solve_pendulum(
+    u0: np.ndarray,
+    T: float,
+    dt: float,
+    pendulum: Optional[Pendulum] = Pendulum() ## et sted sier oppgave default skal være None, et annet sted står det at det skal være Pendulum()?
+) -> PendulumResults:
+
+    result = solve_ode(pendulum, u0, T, dt)
+    pendulum_results = PendulumResults(result, pendulum)
+    return pendulum_results
+    
 if __name__ == "__main__":
     res = exercise_2b(1.42, np.array([np.pi, .35]), 10, .01)
 
