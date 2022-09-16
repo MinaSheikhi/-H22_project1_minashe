@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from ode import ODEModel, ODEResult, solve_ode, plot_ode_solution
 from exp_decay import ExponentialDecay
 from typing import Optional
+import matplotlib.pyplot as plt
 
 
 class Pendulum(ODEModel):
@@ -22,7 +23,6 @@ class Pendulum(ODEModel):
 
 
 def exercise_2b(
-    L: float,
     u0: np.ndarray,
     T: float,
     dt: float,
@@ -85,9 +85,50 @@ def solve_pendulum(
     result = solve_ode(pendulum, u0, T, dt)
     pendulum_results = PendulumResults(result, pendulum)
     return pendulum_results
-    
+
+def plot_energy(results: PendulumResults, filename: Optional[str] = None) -> None:
+    pass
+
+def exercise_2g() -> None:
+    u0 = np.array([np.pi/6, .35])
+    T = 10
+    dt = .01
+
+    result = solve_pendulum(u0, T, dt)
+    plot_energy(result, "energy_single.png")
+    """
+    The energy is conserved.
+    """
+
+
+class DampenedPendulum(Pendulum):
+    def __init__(self, B):
+        self.B = B
+
+    def __call__(self, theta, omega):
+        return -self.g/self.L*np.sin(theta) - self.B*omega
+
+
+def exercise_2h():
+    u0 = np.array([np.pi/6, .35])
+    T = 10
+    dt = .01
+
+    result = solve_pendulum(u0, T, dt, DampenedPendulum(1))
+    plot_energy(result, "energy_damped.png")
+    """
+    ############################TODO############################
+    """
+
 if __name__ == "__main__":
-    res = exercise_2b(1.42, np.array([np.pi, .35]), 10, .01)
+    res_2b = exercise_2b(np.array([np.pi/6, .35]), 10, .01)
 
     state_labels = [r"$\theta$", r"$\omega$"]
-    plot_ode_solution(res, state_labels, "exercise_2b.png")
+    plot_ode_solution(res_2b, state_labels, "exercise_2b.png")
+
+    exercise_2g()
+    exercise_2h()
+
+
+
+    
