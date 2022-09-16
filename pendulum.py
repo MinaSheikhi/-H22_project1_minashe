@@ -31,6 +31,7 @@ def exercise_2b(
     result = solve_ode(model, u0, T, dt)
     return result
 
+
 @dataclass
 class PendulumResults:
     results: ODEResult
@@ -44,13 +45,13 @@ class PendulumResults:
     def omega(self):
         return self.results.time ########?????????##############
 
-#     @property
-#     def x(self) -> np.ndarray:
-#         return self.pendulum.L*np.sin(self.theta)
+    @property
+    def x(self) -> np.ndarray:
+        return self.pendulum.L*np.sin(self.theta)
 
-#     @property 
-#     def y(self) -> np.ndarray():
-#         return -self.pendulum.L*np.cos(self.theta)
+    @property 
+    def y(self) -> np.ndarray:
+        return -self.pendulum.L*np.cos(self.theta)
 
 
 # def solve_pendulum(
