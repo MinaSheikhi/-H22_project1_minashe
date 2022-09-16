@@ -1,6 +1,6 @@
 import numpy as np
 import cmath
-from ode import ODEModel
+from ode import ODEModel, ODEResult, plot_ode_solution, solve_ode
 from scipy.integrate import solve_ivp
 
 
@@ -76,3 +76,10 @@ def solve_exponentional_decay(
     t = np.arange(0, T, dt)
     sol = solve_ivp(fun=modell, t_span=(0,T), y0=u0, t_eval=t)
     return sol["t"], sol["y"]
+
+if __name__ == "__main__":
+    model = ExponentialDecay(0.4)
+    result = solve_ode(model, u0=np.array([4.0]), T=10.0, dt=0.01)
+    plot_ode_solution(
+        results=result, state_labels=["u"], filename="exponential_decay.png"
+    )

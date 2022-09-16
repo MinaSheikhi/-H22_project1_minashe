@@ -1,8 +1,11 @@
-from exp_decay import ExponentialDecay
 import numpy as np
 import pytest
+
 import math
-from ode import ODEModel, ODEResult, solve_ode
+from pathlib import Path
+
+from exp_decay import ExponentialDecay
+from ode import ODEModel, ODEResult, solve_ode, plot_ode_solution
 from exception import InvalidInitialConditionError
 
 model = ExponentialDecay(.4)
@@ -68,5 +71,14 @@ def test_ODEResult():
 
     assert res.num_states == 2 and res.num_timepoints == 3
 
+def test_plot_ode_solution_saves_file():
+    res = solve_ode(model, u0=np.array([4.0]), T=10, dt=.01)
+    
+    filename = Path("test_plot.png")
+    if filename.is_file():
+        filename.unlink()
 
+    plot_ode_solution(res, filename)
 
+    assert filename.is_file()
+    filename.unlink()

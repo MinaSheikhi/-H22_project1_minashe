@@ -1,7 +1,11 @@
+from cProfile import label
 import numpy as np
-import abc
-from typing import NamedTuple
+import matplotlib.pyplot as plt
 from scipy.integrate import solve_ivp
+
+import abc
+from typing import NamedTuple, Optional, List
+
 from exception import InvalidInitialConditionError
 
 class ODEModel(abc.ABC):
@@ -30,7 +34,7 @@ def solve_ode(
     model: ODEModel,
     u0: np.ndarray,
     T: float,
-    dt : float, 
+    dt : float 
 ) -> ODEResult:
 
     if len(u0) != model.num_states:
@@ -41,4 +45,29 @@ def solve_ode(
     res = ODEResult(time=sol["t"], solution=sol["y"])
 
     return res
+
+def plot_ode_solution(
+    results: ODEResult,
+    state_labels: Optional[List[str]] = None,
+    filename: Optional[str] = None,
+) -> None:
+
+    sol = results.solution
+    t = results.time
+ 
+    # if state_labels == None:
+    #     state_labels = [("State " + i) for i in range(results.num_states())]
+    
+    # plt.plot(t[0], sol[1], label=state_labels[i])
+    plt.plot(t, sol)
+    plt.title("ODE Results")
+    plt.xlabel("Time")
+    plt.ylabel("ODE solution")
+    plt.grid(True)
+    plt.legend()
+    # if filename != None:
+    #     plt.savefig(filename)
+
+    plt.show()
+
 
