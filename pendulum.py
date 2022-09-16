@@ -1,3 +1,4 @@
+from xml import dom
 import numpy as np
 from dataclasses import dataclass
 from ode import ODEModel, ODEResult, solve_ode, plot_ode_solution
@@ -12,10 +13,11 @@ class Pendulum(ODEModel):
         self.L = L #length
         self.g = g #gravitional acceleration
 
-    #def __call__(self, u):
-    def __call__(self, theta, omega):
-        f = lambda theta, omega: (-self.g/self.L)*np.sin(theta)
-        return f(theta, omega)
+    def __call__(self, t, u):
+        theta, omega = u
+        dtheta = omega
+        domega = (-self.g/self.L)*np.sin(theta)
+        return np.array([dtheta, domega])
         
     @property
     def num_states(self):
@@ -28,7 +30,7 @@ def exercise_2b(
     dt: float,
 ) -> ODEResult:
 
-    model = Pendulum(L)
+    model = Pendulum()
     result = solve_ode(model, u0, T, dt)
     return result
 
