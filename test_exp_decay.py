@@ -1,7 +1,6 @@
 import numpy as np
 import pytest
 
-import math
 from pathlib import Path
 
 from exp_decay import ExponentialDecay
@@ -12,8 +11,8 @@ model = ExponentialDecay(.4)
 
 def test_ExponentialDecay():
     u = np.array([3.2])
-    dudt = model(3, u)
-    assert math.isclose(dudt[-1], -1.28)
+    dudt = model(0, u)
+    assert np.isclose(dudt[0], -1.28)
 
 def test_negative_decay_raises_ValueError_1a():
     with pytest.raises(ValueError):

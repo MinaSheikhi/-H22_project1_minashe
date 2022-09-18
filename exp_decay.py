@@ -54,30 +54,42 @@ class ExponentialDecay(ODEModel):
 
         return 1
     
-def solve_exponentional_decay(
-    a: float = .4, 
-    u: np.ndarray = np.array([3.2]), 
-    u0: tuple = (0, ), 
-    T: int = 10, 
-    dt: float = .1, 
+def solve_exponential_decay(
+    a: float, 
+    u: np.ndarray, 
+    u0: tuple, 
+    T: int, 
+    dt: float, 
 ) -> np.ndarray:
-
     """
     Instantiates the ExponentialDecay class and solves the ode using solve_ivp from scipy library.
-    Solves for 
-        f(t = 0.4, u = [3.2])
+
+    Input
+        - a: float
+            the exponential decay constant
+        - u: array
+            the u we are solving for
+        - u0: tuple
+            the initial condition for u
+        - T: int
+            end time
+        - dt: float
+            time step
 
     Output
         - an array
             Solved ode
     """
 
-    modell = ExponentialDecay(a)
+    model = ExponentialDecay(a)
     t = np.arange(0, T, dt)
-    sol = solve_ivp(fun=modell, t_span=(0,T), y0=u0, t_eval=t)
+    sol = solve_ivp(fun=model, t_span=(0,T), y0=u0, t_eval=t)
+
     return sol["t"], sol["y"]
 
 if __name__ == "__main__":
+    solve_exponential_decay(.4, np.array([3.2]), (0, ), 10, .01) # Exercise 1e
+
     model = ExponentialDecay(0.4)
     result = solve_ode(model, u0=np.array([4.0]), T=10.0, dt=0.01)
     plot_ode_solution(
