@@ -1,5 +1,4 @@
 import numpy as np
-from ode import solve_ode
 import pytest
 
 from double_pendulum import DoublePendulum, solve_double_pendulum
