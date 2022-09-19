@@ -7,3 +7,6 @@
 ## Authors
 - Maha Riazi (mahari@uio.no)
 - Mina Sheikhi (minashe@mail.uio.no)
+
+Vi har en besvarelse på main, men vi lurte på om vi kunne fått retting/ tilbakemelding på hver våre branches om det lot seg gjøre?
+Takk! :D
