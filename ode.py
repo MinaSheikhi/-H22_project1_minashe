@@ -37,14 +37,16 @@ def solve_ode(
     T: float,
     dt : float,
 ) -> ODEResult:
-    if len(u0) == model.num_states:
-        t = np.arange(0, T, dt)
-        sol = solve_ivp(fun=model, t_eval = t , t_span = (0,T) , y0 = u0)
-        result = ODEResult(time = sol["t"], solution = sol["y"])
-        return result
-    else:
+
+    if len(u0) != model.num_states:
         raise InvalidInitialConditionError()
 
+    t = np.arange(0, T, dt)
+    sol = solve_ivp(fun=model, t_eval = t , t_span = (0, T), y0 = u0, method = "Radau")
+    result = ODEResult(time = t, solution = sol.y)
+    
+    return result
+    
 
 def plot_ode_solution(
     results: ODEResult,
@@ -52,20 +54,26 @@ def plot_ode_solution(
     filename: Optional[str] = None
 ) -> None:
    
+    sol = results.solution
+    t = results.time
+
+    if state_labels == None:
+        state_labels = [("State " + str(i)) for i in range(results.num_states)]
+
+    for i in range(len(sol)):
+        if t.shape == sol[i].shape:
+            plt.plot(t, sol[i], label=state_labels[i])
+
     plt.xlabel("time")
     plt.ylabel("ODE_solution")
-
-    plt.plot(results, state_labels)
-
-
-    plt.grid()
-
+    plt.grid(True)
     plt.legend()
 
-    plt.show()
 
-    plt.savefig('filename')
-
+    if filename != None:
+        plt.savefig(fname = filename)
+    else:
+        plt.show()
 
    
 

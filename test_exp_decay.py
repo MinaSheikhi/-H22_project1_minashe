@@ -1,7 +1,6 @@
 import math
 import numpy as np
 from pathlib import Path
-import matplotlib.pyplot as plt
 
 import pytest
 
@@ -64,7 +63,7 @@ def test_solve_solution(a, u0, T, dt):
     y = res.solution
     y_exact = u0 * np.exp(-a*t)
     relative_error = np.linalg.norm(np.subtract(y, y_exact)) / np.linalg.norm(y_exact)
-
+    print(a)
     assert (relative_error < 0.01)
 
 def test_ODEResults():
@@ -72,6 +71,7 @@ def test_ODEResults():
 
     assert (results.num_states == 2 and results.num_timepoints == 3)
 
+    
 
 
 def test_function_that_creates_a_file():
@@ -82,24 +82,12 @@ def test_function_that_creates_a_file():
         filename.unlink()
 
     # Call the function we are testing
-   plt.savefig("filename")
-
-    # Check that the file has now been created, then delete it
-    assert filename.is_file()
-    filename.unlink()
-
-def test_plot_ode_solution_saves_file():
-
     model = ExponentialDecay(0.4)
     result = solve_ode(model, u0=np.array([4.0]), T=10.0, dt=0.01)
     plot_ode_solution(
-    results=result, state_labels=["u"], filename="exponential_decay.png")
-    
-    filename = Path("exponential_decay.png")
-    # Check if the file already exists and delete if necessary
-    if filename.is_file():
-        filename.unlink()
+    results=result, state_labels=["u"], filename=filename)
 
     # Check that the file has now been created, then delete it
     assert filename.is_file()
     filename.unlink()
+

@@ -20,7 +20,7 @@ class ExponentialDecay(ODEModel):
 
     def __call__(self, t: float, u: np.ndarray) -> np.ndarray:
 
-        """
+        ''' 
         Call function that returns derivative of u at time t.
         
         Input
@@ -28,8 +28,8 @@ class ExponentialDecay(ODEModel):
             - u: numpy array
 
         Output
-            - a numpy array, the derivative dudt
-        """
+            - a numpy array, the derivative dudt '''
+        
 
         f = lambda t, u: -self.a * u
         return f(t,u)
@@ -82,18 +82,19 @@ def solve_exponential_decay(
             Solved ode
     """
 
-    modell = ExponentialDecay(a)
+    model = ExponentialDecay(a)
     t = np.arange(0, T, dt)
-    sol = solve_ivp(fun=modell, t_span=(0,T), y0=u0, t_eval=t)
-    return sol["t"], sol["y"]
+    sol = solve_ivp(fun=model, t_span=(0,T), y0=u0, t_eval=t)
+    return sol.t, sol.y
 
 model = ExponentialDecay(0.4)
 result = solve_ode(model, u0=np.array([4.0]), T=10.0, dt=0.01)
 plot_ode_solution(
-    results=result, state_labels=["u"])
+    results=result, state_labels=["u"], filename="exponential_decay.png")
 
 
-
+if __name__=="__main__":
+     solve_exponential_decay(0.4, np.array([3.2]), (0, ), 10, 0.01) # Exercise 1e
 
 
 
