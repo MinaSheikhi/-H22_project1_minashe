@@ -1,4 +1,3 @@
-from re import L
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
@@ -228,7 +227,7 @@ def exercise_4():
 if __name__ == "__main__":
 
     # Exercise 3d
-    #exercise_3d() 
+    exercise_3d() 
 
     # Exercise 4
     exercise_4()

@@ -262,7 +262,7 @@ if __name__ == "__main__":
 
     # Exercise 2h
     exercise_2h()
-    # The energy translates to other forms of energy and the potential and kinetic and thus total energy is dampened. 
+    # The energy transforms to other forms of energy and the potential and kinetic and thus total energy is dampened. 
 
 
 
