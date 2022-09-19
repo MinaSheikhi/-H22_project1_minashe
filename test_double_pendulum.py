@@ -10,7 +10,7 @@ def test_derivatives_at_rest_is_zero():
     u = np.array([0, 0, 0, 0])
     dudt = model(0, u)
 
-    assert dudt.all() == 0
+    assert all(dudt == 0)
 
 @pytest.mark.parametrize(
     "theta1, theta2, expected", [
@@ -26,7 +26,7 @@ def test_domega1_dt(theta1, theta2, expected):
     dtheta1_dt, domega1_dt, _, _ = model(t, y)
 
     assert np.isclose(dtheta1_dt, 0.25)
-    #assert np.isclose(domega1_dt, expected)
+    assert np.isclose(domega1_dt, expected)
 
 @pytest.mark.parametrize(
     "theta1, theta2, expected", [
@@ -42,24 +42,25 @@ def test_domega2_dt(theta1, theta2, expected):
     _, _, dtheta2_dt, domega2_dt = model(t, y)
 
     assert np.isclose(dtheta2_dt, 0.15)
-    #assert np.isclose(domega2_dt, expected)
+    assert np.isclose(domega2_dt, expected)
 
 def test_solve_pendulum_ode_with_zero_ic():
     res  = solve_ode(DoublePendulum(), np.array([0,0,0,0]), 10, .1)
 
-    assert res.solution.all() == 0
+    assert all(res.solution[0] == 0)
+    assert all(res.solution[1] == 0)
+    assert all(res.solution[2] == 0)
+    assert all(res.solution[3] == 0)
 
 def test_solve_double_pendulum_function_zero_ic():
     dp = DoublePendulum()
     res = solve_double_pendulum(np.array([0, 0, 0, 0]), 10, pendulum=dp)
 
-    assert res.theta1.all() == 0
-    assert res.omega1.all() == 0
-    assert res.theta2.all() == 0
-    assert res.omega2.all() == 0
-    assert res.x1.all() == 0
-    assert res.x2.all() == 0
-    #assert res.y1.all() == -dp.L1
-    #assert res.y2.any() == -(dp.L1 + dp.L2)
-
-test_solve_double_pendulum_function_zero_ic()
+    assert all(res.theta1 == 0)
+    assert all(res.omega1 == 0)
+    assert all(res.theta2 == 0)
+    assert all(res.omega2 == 0)
+    assert all(res.x1 == 0)
+    assert all(res.x2 == 0)
+    assert all(res.y1 == -dp.L1)
+    assert all(res.y2 == -(dp.L1 + dp.L2))

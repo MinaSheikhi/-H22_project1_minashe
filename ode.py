@@ -97,7 +97,7 @@ def plot_ode_solution(
     t = results.time
  
     if state_labels == None:
-        state_labels = [("State " + i) for i in range(results.num_states)]
+        state_labels = [("State " + str(i)) for i in range(results.num_states)]
     
     for i in range(len(sol)):
         if t.shape == sol[i].shape:

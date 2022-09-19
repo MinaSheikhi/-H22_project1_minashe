@@ -16,15 +16,14 @@ def test_pendulum(L, theta, omega, dtomega):
 def test_solve_pendulum_ode_with_zero_ic():
     u0 = np.array([0, 0])
     res = exercise_2b(u0, 10, .1)
+    print(res.solution)
     
-    assert res.solution.all() == 0
+    assert all(res.solution[0] == 0) and all(res.solution[1] == 0)
 
 def test_solve_pendulum_function_zero_ic():
     results = solve_pendulum(np.array([0, 0]), 10, .1)
 
-    assert results.theta.all() == 0 
-    assert results.omega.all() == 0
-    assert results.x.all() == 0
-    #assert results.y.all() == -results.pendulum.L
-    #hva menes med y being an array with the value being equal to the the negative length of the pendulum (-L).
-
+    assert all(results.theta == 0)
+    assert all(results.omega == 0)
+    assert all(results.x == 0)
+    assert all(results.y == -results.pendulum.L)

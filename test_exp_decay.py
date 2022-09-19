@@ -42,7 +42,7 @@ def test_solve_time(a, u0, T, dt):
     t_computed = res.time
     t_expected = np.arange(0, T, dt)
 
-    assert t_expected.all() == t_computed.all()
+    assert all(t_expected == t_computed)
 
 @pytest.mark.parametrize("a, u0, T, dt", [
     (3, np.array([4]), 1, .1),
@@ -59,8 +59,9 @@ def test_solve_solution(a, u0, T, dt):
     sol_expected = u0*np.exp(-a*t)
 
     relative_error = np.linalg.norm(sol_computed - sol_expected) / np.linalg.norm(sol_expected)
-    
-    assert abs(sol_computed - sol_expected).all() < relative_error
+    diff = abs(sol_computed - sol_expected)
+
+    assert diff.all() < relative_error
 
 def test_ODEResult():
     t_ = 3; sol_ = (2, 3)
@@ -72,12 +73,12 @@ def test_ODEResult():
 
 def test_plot_ode_solution_saves_file():
     res = solve_ode(model, u0=np.array([4.0]), T=10, dt=.01)
-    
     filename = Path("test_plot.png")
+
     if filename.is_file():
         filename.unlink()
 
-    plot_ode_solution(res, filename)
+    plot_ode_solution(res, filename=filename)
 
     assert filename.is_file()
     filename.unlink()
