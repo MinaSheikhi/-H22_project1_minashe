@@ -1,12 +1,18 @@
-import abc
-from fileinput import filename
 import numpy as np
 import matplotlib.pyplot as plt
+
+import abc
+from fileinput import filename
+
 from typing import NamedTuple, Optional, List
 from scipy.integrate import solve_ivp
 
 
+
 class InvalidInitialConditionError(RuntimeError):
+    """"
+    Make an Invalid Initial Condition Error.
+    """
     pass
 
 class ODEModel:
@@ -23,12 +29,12 @@ class ODEResult(NamedTuple): # Named tuple creates a immutable datastructure (on
         solution: np.ndarray
 
         @property
-        def num_states(self):
+        def num_states(self) -> float:
             return self.solution.shape[0]
 
         @property
-        def num_timepoints(self):
-            return self.time.shape[0]
+        def num_timepoints(self) -> float:
+            return self.solution.shape[1]
 
 
 def solve_ode(
@@ -39,11 +45,26 @@ def solve_ode(
 ) -> ODEResult:
 
     if len(u0) != model.num_states:
+        """
+        Checks if u0 has as meny stats as conditioned in the model. 
+        If not it returns Invalid Initial Condition Error.
+        Solves u with the use of solve_ivp from scipy.integrate
+
+        Argument
+        --------
+        uo : array
+            Initialcondition array.
+
+        Returns
+        --------
+        ODEResult(NamedTuple) containing timepoints and solution of ODE
+        
+        """
         raise InvalidInitialConditionError()
 
     t = np.arange(0, T, dt)
     sol = solve_ivp(fun=model, t_eval = t , t_span = (0, T), y0 = u0, method = "Radau")
-    result = ODEResult(time = t, solution = sol.y)
+    result = ODEResult(time = sol["t"], solution=sol["y"])
     
     return result
     
@@ -53,7 +74,27 @@ def plot_ode_solution(
     state_labels: Optional[List[str]] = None,
     filename: Optional[str] = None
 ) -> None:
-   
+    """
+    Plots the ODE solution with timepoints.
+
+    Arguments
+    ---------
+    results : ODEResult
+            takes in results of the ODE and time
+
+    state_labels : (Optional) List[str]
+            This is optional. 
+            Will be name of the states on the plot
+        
+    filename : (Optinal) str
+            This is optional.
+            File will be saved with this name.
+
+    Output
+    ---------
+    Either saves file as filename or displays plot on the screen.
+    """
+    fig, ax = plt.subplots()
     sol = results.solution
     t = results.time
 
@@ -62,21 +103,15 @@ def plot_ode_solution(
 
     for i in range(len(sol)):
         if t.shape == sol[i].shape:
-            plt.plot(t, sol[i], label=state_labels[i])
+            ax.plot(t, sol[i], label=state_labels[i])
 
-    plt.xlabel("time")
-    plt.ylabel("ODE_solution")
-    plt.grid(True)
-    plt.legend()
+    ax.set_xlabel("time")
+    ax.set_ylabel("ODE_solution")
+    ax.grid(True)
+    ax.legend()
 
 
-    if filename != None:
-        plt.savefig(fname = filename)
-    else:
+    if filename is None:
         plt.show()
-
-   
-
-
-
-
+    else:
+       fig.savefig(fname = filename) 

@@ -58,7 +58,7 @@ def solve_exponential_decay(
     a: float = .4, 
     u: np.ndarray = np.array([3.2]), 
     u0: tuple = (0, ), 
-    T: int = 10, 
+    T: float = 10.0, 
     dt: float = .1, 
 ) -> np.ndarray:
 
@@ -94,7 +94,8 @@ plot_ode_solution(
 
 
 if __name__=="__main__":
-     solve_exponential_decay(0.4, np.array([3.2]), (0, ), 10, 0.01) # Exercise 1e
+    # Exercise 1e
+    solve_exponential_decay(0.4, np.array([3.2]), (0, ), 10, 0.01) 
 
 
 

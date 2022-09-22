@@ -63,16 +63,12 @@ def test_solve_solution(a, u0, T, dt):
     y = res.solution
     y_exact = u0 * np.exp(-a*t)
     relative_error = np.linalg.norm(np.subtract(y, y_exact)) / np.linalg.norm(y_exact)
-    print(a)
     assert (relative_error < 0.01)
 
 def test_ODEResults():
     results = ODEResult(time=np.array([0, 1, 2]), solution=np.zeros((2, 3)))
 
     assert (results.num_states == 2 and results.num_timepoints == 3)
-
-    
-
 
 def test_function_that_creates_a_file():
 

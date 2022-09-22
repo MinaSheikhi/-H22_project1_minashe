@@ -1,5 +1,6 @@
 import numpy as np
 import pytest
+
 from pendulum import Pendulum, exercise_2b, solve_pendulum
 
 
@@ -17,11 +18,9 @@ def test_solve_pendulum_ode_with_zero_ic():
     u0 = np.array([0, 0])
     res = exercise_2b(u0, T = 10, dt = 0.01)
     assert all(res.solution[0] == 0) and all(res.solution[1] == 0)
-   # assert all(res[0] == 0) and all(res[1] ==  0)
-
 
 def test_solve_pendulum_function_zero_ic():
-    results = solve_pendulum(u0 = np.array([0, 0]), T = 10, dt = 0.1)
+    results = solve_pendulum(u0 = np.array([0, 0]), T = 10, dt = 0.1, pendulum = Pendulum())
           
     assert all(results.theta == 0)
     assert all(results.omega == 0)

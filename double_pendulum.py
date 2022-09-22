@@ -78,23 +78,23 @@ class DoublePendulumResults:
 
     @property
     def vx1(self) -> np.ndarray:
-        return np.gradient(self.x1)
+        return np.gradient(self.x1, self.results.time)
 
     @property
     def vy1(self) -> np.ndarray:
-        return np.gradient(self.y1)
+        return np.gradient(self.y1, self.results.time)
     @property
     def vx2(self) -> np.ndarray:
-        return np.gradient(self.x2)
+        return np.gradient(self.x2, self.results.time)
 
     @property
     def vy2(self) -> np.ndarray:
-        return np.gradient(self.y2)
+        return np.gradient(self.y2, self.results.time)
 
     @property
     def kinetic_energy(self) -> np.ndarray:
-        K1 = self.pendulum.M1*((self.vx1**2) + (self.vy1**2))/2
-        K2 = self.pendulum.M2*((self.vx2**2) + (self.vy2**2))/2
+        K1 = 0.5* self.pendulum.M1*((self.vx1**2) + (self.vy1**2))
+        K2 = 0.5 * self.pendulum.M2*((self.vx2**2) + (self.vy2**2))
         K = K1 + K2
         return K
 
@@ -107,7 +107,7 @@ def solve_double_pendulum(
     u0: np.ndarray,
     T: float,
     dt: float = 0.01,
-    pendulum: DoublePendulum = DoublePendulum(),
+    pendulum: Optional[DoublePendulum] = None,
 ) -> DoublePendulumResults:
 
 
@@ -120,11 +120,10 @@ def exercise_3d() -> np.ndarray:
     u0 = np.array([np.pi/6, 0.35, 0, 0])
     T = 10.0
     dt = 0.01
-    
-    results = solve_double_pendulum(u0, T, dt)
+    results = solve_double_pendulum(u0 = u0, T = T, dt = dt, pendulum = DoublePendulum())
 
-    return results
+    plot_energy(results, filename = "energy_double.png")
 
 if __name__ == "__main__":
-    sol = exercise_3d()
-    plot_energy(results = sol, filename = "energy_double.png")
+    exercise_3d()
+ 
