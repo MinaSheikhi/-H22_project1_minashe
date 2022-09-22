@@ -8,7 +8,22 @@ from pendulum import plot_energy
 
 
 class DoublePendulum(ODEModel):
-    def __init__(self, L1: float = 1, L2: float = 1, M1: float = 1, M2: float = 1, g: float = 9.81) -> float:
+    def __init__(self, L1: float = 1, L2: float = 1, M1: float = 1, M2: float = 1, g: float = 9.81) -> None:
+        """
+        Takes input arguments.
+
+        Arguments
+        ----------
+        L1 : Length of pendulum one
+        L2 : Length of pendulum two
+        M1 : Mass og pendulum one
+        M2 : Mass og pendulum two
+        g: gravitation
+
+        Output
+        ---------
+        None
+        """
         self.L1 = L1
         self.L2 = L2
         self.M1 = M1
@@ -16,6 +31,22 @@ class DoublePendulum(ODEModel):
         self.g = g
 
     def __call__(self, t:float, u:np.ndarray) -> np.ndarray:
+        """
+        Call function that returns array of the ODEs
+
+        Arguments
+        ---------
+        t : float
+            time
+        
+        u : array
+            array containing the states
+
+        returns
+        ---------
+        array with the derivative of the states.
+        """
+
         theta1, omega1, theta2, omega2 = u
 
         dtheta1_dt = omega1
@@ -109,7 +140,25 @@ def solve_double_pendulum(
     dt: float = 0.01,
     pendulum: Optional[DoublePendulum] = None,
 ) -> DoublePendulumResults:
-
+    """
+    Solves the ODEs. 
+    Instantiates the DoublePendulum class and solves the ode using solve_ode from ode.py.
+    
+    Arguments
+    ---------
+        - u0: tuple
+            initial condition for u
+        - T: int
+            end time
+        - dt: float
+            timestep
+            
+    Returns
+    ---------
+        - an array
+            Solved ode
+    
+    """
 
     result = solve_ode(u0 = u0, T = T, dt = dt, model = pendulum)
     pendulum_results = DoublePendulumResults(result, pendulum)
@@ -117,6 +166,24 @@ def solve_double_pendulum(
     return pendulum_results
 
 def exercise_3d() -> np.ndarray:
+    """
+    Plots the kinetic, potential and total energy of the double pendulum.
+
+     Arguments
+     -----------
+        - u0: tuple
+            initial condition for u
+        - T: int
+            end time
+        - dt: float
+            timestep
+
+    Output
+    -----------
+    Either a file saved with the name energy_double.png, 
+    or the plot displayed on the screen.
+    
+    """
     u0 = np.array([np.pi/6, 0.35, 0, 0])
     T = 10.0
     dt = 0.01

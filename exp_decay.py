@@ -3,7 +3,7 @@ from scipy.integrate import solve_ivp
 from ode import ODEModel, solve_ode, plot_ode_solution
 
 class ExponentialDecay(ODEModel):
-    def __init__(self, a: float):
+    def __init__(self, a: float) -> None:
         """
         Constructor for ExponentialDecay
         
@@ -64,8 +64,7 @@ def solve_exponential_decay(
 
     """
     Instantiates the ExponentialDecay class and solves the ode using solve_ivp from scipy library.
-    Default solves for 
-        f(t = 0.4, u = [3.2]) with u0 = (0, ), T = 10, dt = 0.1
+    
     Input
         - a: float
             the decay constant
