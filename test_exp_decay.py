@@ -14,7 +14,7 @@ def test_ExponentialDecay():
     u = np.array([3.2])
     du_dt = model(t, u)
 
-    assert math.isclose(du_dt[0], -1.28)
+    assert np.isclose(du_dt[0], -1.28)
 
 def test_negative_decay_raises_ValueError_1a():
     with pytest.raises(ValueError):
