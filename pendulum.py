@@ -167,21 +167,23 @@ def plot_energy(results: PendulumResults, filename: Optional[str] = None) -> Non
     k = results.kinetic_energy
     tot = results.total_energy
     t = results.results.time
- 
-    plt.plot(t, p, label="Potential energy")
-    plt.plot(t, k, label="Kinetic energy")
-    plt.plot(t, tot, label="Total energy")
-
-    plt.title("Potential and kinetic energi in ODE system")
-    plt.xlabel("Time")
-    plt.ylabel("Energy")
-    plt.grid(True)
-    plt.legend()
-
+    
+    fig, ax = plt.subplots()
+    ax.plot(t, p, label="Potential energy")
+    ax.plot(t, k, label="Kinetic energy")
+    ax.plot(t, tot, label="Total energy")
+    
+    ax.set_title("Potential and kinetic energi in ODE system")
+    ax.set_xlabel("Time")
+    ax.set_ylabel("Energy")
+    ax.grid(True)
+    ax.legend()
+    
     if filename != None:
-        plt.savefig(filename)
+        fig.savefig(filename)
     else:
-        plt.show()
+        plt.figure()
+    
 
 def exercise_2g() -> PendulumResults:
     """
