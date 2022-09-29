@@ -1,12 +1,13 @@
 import numpy as np
-import math
-
 import pytest
 
-from exp_decay import ExponentialDecay
-from ode import solve_ode, InvalidInitialConditionError
+from pathlib import Path
 
-model = ExponentialDecay(0.4)
+from exp_decay import ExponentialDecay
+from ode import ODEModel, ODEResult, solve_ode, plot_ode_solution
+from exception import InvalidInitialConditionError
+
+model = ExponentialDecay(.4)
 
 def test_ExponentialDecay():
     t = 0.0
@@ -17,12 +18,11 @@ def test_ExponentialDecay():
 
 def test_negative_decay_raises_ValueError_1a():
     with pytest.raises(ValueError):
-        model = ExponentialDecay(-0.4)
+        model = ExponentialDecay(-3)
 
 def test_negative_decay_raises_ValueError_1b():
-    model = ExponentialDecay(0.4) #set a = 0.4
     with pytest.raises(ValueError):
-        model.decay = -1.0  # cant set a to new value -1 because of valueerror
+        model.decay = -1.0  
               
 def test_num_states():
     assert model.num_states == 1
